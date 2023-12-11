@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:hearthstone_matches_flutter/appconfig/appconfig.dart';
 
 class MatchTile extends StatefulWidget {
-  const MatchTile({
+   const MatchTile({
     super.key,
     required this.title,
-    required this.date,
     required this.yourClass,
     required this.enemyClass,
     required this.result,
+      required this.date,
   });
 
   final String title;
-  final String date;
+  final DateTime date;
   final String yourClass;
   final String enemyClass;
   final String result;
@@ -24,9 +24,6 @@ class MatchTile extends StatefulWidget {
 }
 
 class _MatchTileState extends State<MatchTile> {
-  void _removeTile(int index) {
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +64,7 @@ class _MatchTileState extends State<MatchTile> {
                   Text(widget.result, style: subTitleStyle),
                 ],
               ),
-              Text(widget.date),
+              Text(widget.date as String),
             ],
           ),
         ),

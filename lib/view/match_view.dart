@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hearthstone_matches_flutter/model/class_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+
 
 class MatchView extends StatefulWidget {
   const MatchView({super.key});
@@ -16,8 +17,6 @@ class _MatchViewState extends State<MatchView> {
     _selectEnemyVal = _enemyItemList[0];
     _selectResult = _resultList[0];
   }
-
-  ManageData dataStorage = ManageData();
 
   // ---------- Ändert den State von dem Sheet ---------- ***
 
@@ -131,6 +130,7 @@ class _MatchViewState extends State<MatchView> {
   String? _selectEnemyVal = "Warrior";
   String? _selectResult = "Select";
   final String key = "dataListKey";
+  String now = DateFormat("yyyy-MM-dd hh:mm:ss").format(DateTime.now());
 
   final List<dynamic> _classItemList = [
     "Warrior",
@@ -158,9 +158,6 @@ class _MatchViewState extends State<MatchView> {
   ];
   final List<dynamic> _resultList = ["Win", "Loss"];
 
-
-
-  //Todo: Funktionen in eine Klasse packen
   @override
   void initState() {
     super.initState();
@@ -188,13 +185,14 @@ class _MatchViewState extends State<MatchView> {
                 return StatefulBuilder(
                   builder: (BuildContext context, StateSetter setState) {
                     return SizedBox(
-                      height: MediaQuery.of(context).size.height - 500.0,
+                      height: MediaQuery.of(context).size.height - 350.0,
                       width: double.infinity,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 90),
+
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 200.0,
                             child: DropdownButton(
@@ -214,39 +212,50 @@ class _MatchViewState extends State<MatchView> {
                                 }),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 200.0,
-                            child: DropdownButton(
-                                value: _selectEnemyVal,
-                                items: _enemyItemList.map((i) {
-                                  return DropdownMenuItem(
-                                    value: i,
-                                    child: Text(i),
-                                  );
-                                }).toList(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selectEnemyVal = val as String;
-                                  });
-                                }),
+                         const Text("Your Class"),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width - 200.0,
+                              child: DropdownButton(
+                                  value: _selectEnemyVal,
+                                  items: _enemyItemList.map((i) {
+                                    return DropdownMenuItem(
+                                      value: i,
+                                      child: Text(i),
+                                    );
+                                  }).toList(),
+                                  onChanged: (val) {
+                                    setState(() {
+
+                                      _selectEnemyVal = val as String;
+                                    });
+                                  }),
+                            ),
                           ),
                           const SizedBox(height: 10),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 200.0,
-                            child: DropdownButton(
-                                value: _selectResult,
-                                items: _resultList.map((r) {
-                                  return DropdownMenuItem(
-                                    value: r,
-                                    child: Text(r),
-                                  );
-                                }).toList(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selectResult = val as String;
-                                  });
-                                }),
+                          const Text("Enemy Class"),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: SizedBox(
+
+                              width: MediaQuery.of(context).size.width - 200.0,
+                              child: DropdownButton(
+                                  value: _selectResult,
+                                  items: _resultList.map((r) {
+                                    return DropdownMenuItem(
+                                      value: r,
+                                      child: Text(r),
+                                    );
+                                  }).toList(),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      _selectResult = val as String;
+                                    });
+                                  }),
+                            ),
                           ),
+                          Text("Result"),
                           const Spacer(),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 30),
@@ -306,7 +315,7 @@ class _MatchViewState extends State<MatchView> {
           )
         ],
       ),
-        //Todo: Datenbank einbauen und testen
+
       // ---------- ListView for the Match Results ---------- ***
       body: ListView.separated(
                   itemCount: _matchArray.length,
@@ -329,30 +338,37 @@ class _MatchViewState extends State<MatchView> {
                             children: [
                               Row(
                                 children: [
+
                                   Text(
-                                    _matchArray[index],
+                                   _matchArray[index],
                                     style: const TextStyle(
                                         fontSize: 18, fontWeight: FontWeight.w600),
                                   ),
-                                  const SizedBox(width: 10),
-                                  const Text(
-                                    "vs",
-                                    style: TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.w400),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(_enemyArray[index],
-                                      style: const TextStyle(
-                                          fontSize: 18, fontWeight: FontWeight.w600)),
+
+
+
+
                                 ],
+
                               ),
-                              const Text(
-                                "16.07.2023",
-                                style: TextStyle(
-                                    fontSize: 13,
-                                    color: Colors.white30,
-                                    fontWeight: FontWeight.bold),
-                              )
+                               Column(
+                                 mainAxisAlignment: MainAxisAlignment.start,
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+
+                                 children: [
+
+                                   Text(_enemyArray[index],
+                                       style: const TextStyle(
+                                           fontSize: 18, fontWeight: FontWeight.w600)),
+                                   Text(
+                                   DateFormat("MM-dd-yyyy / hh:mm").format(DateTime.now()),
+                                    style:  const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.white70,
+                                        fontWeight: FontWeight.bold),
+                              ),
+                                 ],
+                               )
                             ],
                           ),
                         ),
